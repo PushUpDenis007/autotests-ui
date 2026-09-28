@@ -1,5 +1,8 @@
 from playwright.sync_api import sync_playwright, expect
+import pytest
 
+@pytest.mark.courses
+@pytest.mark.regression
 def test_empty_courses_list():
     with sync_playwright() as playwright:
         # Открываем браузер и создаем новую страницу
@@ -24,11 +27,11 @@ def test_empty_courses_list():
         # Нажимаем на кнопку Login
         registration_button = page.get_by_test_id('registration-page-registration-button')
         registration_button.click()
-        context.storage_state(path="browser-state.json")
-
+        
         dashboard = page.get_by_test_id('dashboard-toolbar-title-text')
         expect(dashboard).to_be_visible()
-
+        context.storage_state(path="browser-state.json")
+    
         new_context = browser.new_context(storage_state="browser-state.json")
         new_page = new_context.new_page()
         new_page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses")
